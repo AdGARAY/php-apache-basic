@@ -2,8 +2,7 @@ FROM php:7.2-apache
 
 LABEL maintainer='adriangaray97@gmail.com'
 
-ENV WEB_SERVER_USER 'www-data'
-ENV TRIPANDLIVE_USER 'tripandlive'
+ENV ADMIN_USER 'admin'
 
 RUN docker-php-ext-install json mbstring mysqli pdo pdo_mysql
 
@@ -22,9 +21,9 @@ RUN echo "xdebug.profiler_output_dir = '/var/www/html'" >> /usr/local/etc/php/co
 RUN echo "xdebug.cli_color = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN echo chmod 666 /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-RUN groupadd tripandliveGroup -g 3000
-RUN useradd -g 3000 -m -d /home/${TRIPANDLIVE_USER} -s /bin/bash ${TRIPANDLIVE_USER} &&\
-    usermod -g www-data ${TRIPANDLIVE_USER}
-RUN mkdir /home/${TRIPANDLIVE_USER}/.ssh
-RUN passwd ${TRIPANDLIVE_USER} -d
-RUN groupmod -g $(id -u ${TRIPANDLIVE_USER}) www-data
+RUN groupadd containerGroup -g 3000
+RUN useradd -g 3000 -m -d /home/${ADMIN_USER} -s /bin/bash ${ADMIN_USER} &&\
+    usermod -g www-data ${ADMIN_USER}
+RUN mkdir /home/${ADMIN_USER}/.ssh
+RUN passwd ${ADMIN_USER} -d
+RUN groupmod -g $(id -u ${ADMIN_USER}) www-data
